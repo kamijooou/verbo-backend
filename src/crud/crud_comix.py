@@ -1,3 +1,4 @@
+import uuid
 from typing import List
 
 from fastapi.encoders import jsonable_encoder
@@ -10,7 +11,7 @@ from src.schemas.comix import ComixCreate, ComixUpdate
 
 class CRUDComix(CRUDBase[Comix, ComixCreate, ComixUpdate]):
     def create_with_owner(
-        self, db: Session, *, obj_in: ComixCreate, owner_id: int
+        self, db: Session, *, obj_in: ComixCreate, owner_id: uuid.UUID
     ) -> Comix:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data, owner_id=owner_id)

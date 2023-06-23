@@ -28,7 +28,3 @@ class ComixInDBBase(ComixBase):
 
 class Comix(ComixInDBBase):
     pass
-
-
-class ComixInDB(ComixInDBBase):
-    pass

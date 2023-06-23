@@ -1,3 +1,4 @@
+import uuid
 from typing import Generator
 
 from fastapi import Depends, HTTPException, status
@@ -34,8 +35,6 @@ def get_current_user(
         )
         token_data = schemas.TokenPayload(**payload)
     except (jwt.JWTError, ValidationError) as exc:
-        print(exc)
-        print(settings.SECRET_KEY)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",

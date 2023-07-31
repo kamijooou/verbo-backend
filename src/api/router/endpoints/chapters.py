@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 from src import crud, models, schemas
 from src.api import deps
 
+from src.clean_module import worker
+
 router = APIRouter()
 
 
@@ -62,7 +64,7 @@ def update_chapter(
     db: Session = Depends(deps.get_db),
     id: uuid.UUID,
     chapter_in: schemas.ChapterUpdate,
-    current_user: models.User = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_user)
 ) -> Any:
     """
     Update a chapter or images into it.
@@ -80,10 +82,13 @@ def update_chapter(
 def clean_page(
     *,
     db: Session = Depends(deps.get_db),
-    id: uuid.UUID,
-    
+    current_user: models.User = Depends(deps.get_current_active_user)
 ):
-    pass
+    """
+    Clean bubbles from text
+    """
+    worker.run_clean()
+    return
 
 
 @router.get("/{id}", response_model=schemas.Chapter)
